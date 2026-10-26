@@ -1,0 +1,49 @@
+""" Greedy Algorithms Lab
+Version: 2025
+Author: Colin Finnegan
+"""
+
+function knapsack_01(items, W, index):
+    # Base case: no items left OR no capacity left
+    if index == len(items) OR W == 0:
+        return 0
+
+    value = items[index].value
+    weight = items[index].weight
+
+    # Option 1: skip this item
+    skip = knapsack_01(items, W, index + 1)
+
+    # Option 2: take this item (only if it fits)
+    if weight <= W:
+        take = value + knapsack_01(items, W - weight, index + 1)
+    else:
+        take = 0
+
+    # Return the max value between taking or skipping
+    return max(take, skip)
+
+
+# Wrapper to call from main:
+function solve_knapsack_01(items, W):
+    return knapsack_01(items, W, 0)
+
+
+Which is easier/more efficient?
+
+    Fractional knapsack — only needs sorting (O(n log n)).
+    0/1 knapsack is exponential or pseudo-polynomial.
+
+Would fractional approach work on 0/1 knapsack?
+
+    It would be fast, but not always correct because items can't be split.
+
+Example showing failure of greedy on 0/1 knapsack:
+
+    Capacity: 50
+    Items:
+        A: value=60, weight=10 (ratio 6)
+        B: value=100, weight=20 (ratio 5)
+        C: value=120, weight=30 (ratio 4)
+    Fractional result: 240 (takes part of C, not valid in 0/1)
+    Best 0/1 result: 220 (B + C)

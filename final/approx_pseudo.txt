@@ -1,0 +1,6 @@
+1. Initialize empty cover C and matched set M
+2. For each edge (u,v) in E:
+     If u∉M and v∉M:
+         Add u and v to C
+         Add u and v to M
+3. Return C

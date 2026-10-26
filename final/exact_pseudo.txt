@@ -1,0 +1,35 @@
+FUNCTION read_graph():
+    READ m (number of edges) from input
+    vertices = empty set
+    edges = empty list
+    
+    FOR i = 1 TO m:
+        READ u, v from input
+        ADD u to vertices
+        ADD v to vertices
+        ADD (u, v) to edges
+    
+    RETURN vertices, edges
+
+FUNCTION is_vertex_cover(edges, candidate):
+    FOR EACH edge (u, v) in edges:
+        IF u NOT in candidate AND v NOT in candidate:
+            RETURN False
+    RETURN True
+
+FUNCTION exact_vertex_cover(vertices, edges):
+    vertices_list = CONVERT vertices to list
+    
+    FOR k = 1 TO LENGTH(vertices_list):
+        FOR EACH combination of k vertices from vertices_list:
+            candidate = SET(combination)
+            
+            IF is_vertex_cover(edges, candidate):
+                RETURN candidate
+    
+    RETURN vertices_list  # Fallback: all vertices
+
+MAIN:
+    vertices, edges = read_graph()
+    cover = exact_vertex_cover(vertices, edges)
+    PRINT cover elements separated by spaces
